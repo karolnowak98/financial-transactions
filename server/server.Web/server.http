@@ -1,0 +1,17 @@
+@hostname=localhost
+@port=7106
+
+GET adres/Transactions
+
+###
+
+POST adres/Register
+Accept: application/json
+
+###
+
+POST https://{{hostname}}:{{port}}/SeedRoles
+Accept: application/json
+Content-Type: application/json
+
+{}
