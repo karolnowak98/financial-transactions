@@ -1,4 +1,4 @@
-using server.UseCases.Users.Commands;
+using server.Operations.Users.Commands;
 
 namespace server.Web.Users;
 
@@ -17,13 +17,13 @@ public class LoginUser(ISender sender) : Endpoint<LoginUserRequest, LoginUserRes
 
         if(result.Status == ResultStatus.Unauthorized)
         {
-            await SendErrorsAsync(401, ct);
+            await SendUnauthorizedAsync(ct);
             return;
         }
         
         if (result.IsSuccess)
         {
-            await SendOkAsync(ct);
+            Response = new LoginUserResponse(result.Value);
         }
     }
 }

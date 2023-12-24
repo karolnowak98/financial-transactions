@@ -1,0 +1,99 @@
+@hostname=localhost
+@port=7106
+@adres=https://{{hostname}}:{{port}}
+
+@testUserLogin=TestUser@localhost
+@testUserPassword=TestPassword123#
+@testUserToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVGVzdFVzZXJAbG9jYWxob3N0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJmNTdhNDU1ZS1jZjEwLTQ3MGItOWM4MS0wOGRjMDNiODMyOTAiLCJKd3RJZCI6ImY3NTRlNjMzLTg0MDUtNDMzNi04NGY0LTNmMjA3OGU5MWQ5NyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MDMzODE0NzYsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxMDYiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MTA2In0.MF3mPyJuglMKGg5Mr2GcXjvWHPb67u4Ei91uYTE6HKM
+
+@testAdminLogin=admin@localhost
+@testAdminPassword=Administrator123!
+@testAdminToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AbG9jYWxob3N0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIyOTBjYTA0OS1kZDYyLTQ3NTgtOWM4MC0wOGRjMDNiODMyOTAiLCJKd3RJZCI6IjVhMmRhYWIzLTBlNDItNGI1Mi05ZmNjLTAwNmVjNjZjODE4YyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAzMzUxOTAwLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTA2IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzEwNiJ9.FC-URThMK_WwNTL_tW71lPnu_HUrz2A5E7fssba9EIA
+
+//LoginUser
+POST {{adres}}/Login
+Content-Type: application/json
+
+{
+  "loginDto": {
+    "email": "{{testUserLogin}}",
+    "password": "{{testUserPassword}}"
+  }
+}
+
+###
+//LoginAdmin
+POST {{adres}}/Login
+Content-Type: application/json
+
+{
+  "loginDto": {
+    "email": "{{testAdminLogin}}",
+    "password": "{{testAdminPassword}}"
+  }
+}
+
+###
+//RegisterUser
+POST {{adres}}/Register
+Content-Type: application/json
+
+{
+  "registerDto": {
+    "firstName": "string",
+    "lastName": "string",
+    "email": "string@32",
+    "password": "Haslo231@31FA"
+  }
+}
+
+###
+//GetTotalBalance
+GET {{adres}}/TotalBalance
+Authorization: Bearer {{testUserToken}}
+
+###
+//GetTransactions
+GET {{adres}}/Transactions
+Authorization: Bearer {{testUserToken}}
+
+###
+//GetTransactionById
+@transaction_id=B69868B8A90441B98A4358E021162CCD
+GET {{adres}}/Transactions/{{transaction_id}}
+Authorization: Bearer {{testUserToken}}
+
+###
+//GetTransactionsByType
+@category_type=Shopping
+GET {{adres}}/Transactions/{{category_type}}
+Authorization: Bearer {{testUserToken}}
+
+###
+//CreateTransaction
+POST {{adres}}/Transactions/Create
+Authorization: Bearer {{testUserToken}}
+Content-Type: application/json
+
+{
+  "createTransactionDto": {
+    "amount": 6,
+    "dateTime": "2023-12-23T14:47:42.965Z",
+    "description": "SampleDescription",
+    "categoryType": 2
+  }
+}
+
+###
+//CreateUniqueTransactionCategories
+POST {{adres}}/Transactions/CreateCategories
+Authorization: Bearer {{testAdminToken}}
+Content-Type: application/json
+
+{}
+
+###
+//DeleteTransaction
+@id_to_delete=BBEAE9F4F00446C6B77B170AC3F47E8D
+DELETE {{adres}}/Transactions/Delete/{{id_to_delete}}
+Authorization: Bearer {{testUserToken}}

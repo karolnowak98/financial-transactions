@@ -21,22 +21,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\server.Infrastructure\server.Infrastructure.csproj" />
-      <ProjectReference Include="..\server.UseCases\server.UseCases.csproj" />
+      <ProjectReference Include="..\server.Operations\server.Operations.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Transactions\GetAllForUser.Request.cs">
-        <DependentUpon>GetAllForUser.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Transactions\GetAllForUserResponse.cs">
-        <DependentUpon>GetAllForUser.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Transactions\CreateTransaction.Request.cs">
-        <DependentUpon>CreateTransaction.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Transactions\CreateTransaction.Validator.cs">
-        <DependentUpon>CreateTransaction.cs</DependentUpon>
-      </Compile>
       <Compile Update="Users\RegisterUser.Request.cs">
         <DependentUpon>RegisterUser.cs</DependentUpon>
       </Compile>
@@ -44,6 +32,12 @@
         <DependentUpon>LoginUser.cs</DependentUpon>
       </Compile>
       <Compile Update="Users\LoginUser.Response.cs">
+        <DependentUpon>LoginUser.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Users\RegisterUser.Validator.cs">
+        <DependentUpon>RegisterUser.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Users\LoginUser.Validator.cs">
         <DependentUpon>LoginUser.cs</DependentUpon>
       </Compile>
     </ItemGroup>

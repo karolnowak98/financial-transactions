@@ -11,7 +11,7 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.Property(t => t.Amount)
             .HasColumnType("decimal(10, 2)")
             .HasPrecision(10, 2)
-            .HasMaxLength(DataSchemaConstants.DefaultMaxAmount)
+            .HasMaxLength(DataSchemaConstants.DefaultMaxTransactionAmount)
             .HasDefaultValue(0);
 
         builder.Property(t => t.Description)

@@ -1,4 +1,4 @@
-using server.UseCases.Users.Commands;
+using server.Operations.Users.Commands;
 
 namespace server.Web.Users;
 
@@ -17,7 +17,7 @@ public class RegisterUser(ISender sender) : Endpoint<RegisterUserRequest>
 
         if(result.Status == ResultStatus.Conflict)
         {
-            await SendErrorsAsync(409, ct);
+            await SendAsync(result.Errors,409, ct);
             return;
         }
         

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server.Web", "server.Web\server.Web.csproj", "{B3F0CA28-4179-4A68-8927-B91EC2F9FA91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server.UseCases", "server.UseCases\server.UseCases.csproj", "{9436733B-0A01-4926-8D78-80EEBE3373E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server.Operations", "server.Operations\server.Operations.csproj", "{9436733B-0A01-4926-8D78-80EEBE3373E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server.Infrastructure", "server.Infrastructure\server.Infrastructure.csproj", "{4751D701-C23B-4861-9B7F-3E07CE7AC779}"
 EndProject

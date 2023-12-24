@@ -1,4 +1,4 @@
-using server.UseCases.Users.Dtos;
+using server.Operations.Users.Dtos;
 
 namespace server.Web.Users;
 

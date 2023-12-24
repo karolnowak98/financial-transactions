@@ -41,13 +41,6 @@ public static class InfrastructureModule
             options.Password.RequiredLength = DataSchemaConstants.DefaultPasswordMinLength;
         });
         
-        services.Configure<RequestLocalizationOptions>(options =>
-        {
-            options.DefaultRequestCulture = new RequestCulture("en");
-            options.SupportedCultures = new List<CultureInfo> { new("en") };
-            options.SupportedUICultures = new List<CultureInfo> { new("en") };
-        });
-        
         services.AddScoped<AppDbContextInitializer>();
         services.AddScoped<IJwtGenerator, JwtGenerator>();
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));

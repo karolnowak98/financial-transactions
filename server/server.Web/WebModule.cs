@@ -2,6 +2,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using server.Core.TransactionAggregate;
+using server.Web.Transactions;
 
 namespace server.Web;
 
@@ -38,6 +40,7 @@ public static class WebModule
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Financial Api", Version = "v1" });
 
+            c.UseInlineDefinitionsForEnums();
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,

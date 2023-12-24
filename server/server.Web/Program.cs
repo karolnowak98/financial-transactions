@@ -1,12 +1,12 @@
 using server.Infrastructure;
-using server.UseCases;
+using server.Operations;
 using server.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services.AddInfrastructureServices(builder.Configuration);
-services.AddUseCasesServices();
+services.AddOperationsServices();
 services.AddWebServices(builder.Configuration);
 
 var app = builder.Build();

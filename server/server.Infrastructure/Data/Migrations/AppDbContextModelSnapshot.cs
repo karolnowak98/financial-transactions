@@ -157,7 +157,7 @@ namespace server.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transaction");
                 });
 
             modelBuilder.Entity("server.Core.TransactionAggregate.TransactionCategory", b =>
@@ -166,15 +166,16 @@ namespace server.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TransactionCategories");
+                    b.ToTable("TransactionCategory");
                 });
 
-            modelBuilder.Entity("server.Core.UserAggregate.AppRole", b =>
+            modelBuilder.Entity("server.Core.UsersAggregate.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -202,7 +203,7 @@ namespace server.Infrastructure.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("server.Core.UserAggregate.AppUser", b =>
+            modelBuilder.Entity("server.Core.UsersAggregate.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -278,7 +279,7 @@ namespace server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("server.Core.UserAggregate.AppRole", null)
+                    b.HasOne("server.Core.UsersAggregate.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -287,7 +288,7 @@ namespace server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("server.Core.UserAggregate.AppUser", null)
+                    b.HasOne("server.Core.UsersAggregate.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,7 +297,7 @@ namespace server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("server.Core.UserAggregate.AppUser", null)
+                    b.HasOne("server.Core.UsersAggregate.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -305,13 +306,13 @@ namespace server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("server.Core.UserAggregate.AppRole", null)
+                    b.HasOne("server.Core.UsersAggregate.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("server.Core.UserAggregate.AppUser", null)
+                    b.HasOne("server.Core.UsersAggregate.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -320,7 +321,7 @@ namespace server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("server.Core.UserAggregate.AppUser", null)
+                    b.HasOne("server.Core.UsersAggregate.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

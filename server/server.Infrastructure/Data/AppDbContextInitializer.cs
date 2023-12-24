@@ -35,8 +35,8 @@ public class AppDbContextInitializer(
              throw;
          }
      }
-    
-     public async Task TrySeedAsync()
+
+     private async Task TrySeedAsync()
      {
          var adminRole = new AppRole { Name = StaticAppUserRoles.Admin};
          var userRole = new AppRole { Name = StaticAppUserRoles.User};
