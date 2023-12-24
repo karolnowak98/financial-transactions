@@ -5,9 +5,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { UserRegisterDto } from "../../../shared/interfaces/dtos/user-register-dto.interface";
 import { AuthService } from "../../../shared/services/auth.service";
 import { CustomValidators}  from "../../../shared/utils/custom-validators";
+import { RegisterDto } from "../../../shared/interfaces/dtos/register-dto.interface";
 
 @Component({
   selector: 'app-register',
@@ -26,7 +26,7 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  userRegisterDto : UserRegisterDto = { firstName: '', lastName:'', password:'', email:''};
+  userRegisterDto : RegisterDto = { firstName: '', lastName:'', password:'', email:''};
   form: FormGroup;
   formSubmitted: boolean = false;
   showPassword: boolean = false;

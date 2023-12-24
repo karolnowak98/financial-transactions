@@ -3,10 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
-import { UserLoginDto } from "../interfaces/dtos/user-login-dto.interface";
-import { ServiceResponse } from "../interfaces/service-response.interface";
 import { environment } from "../utils/environment";
-import { UserRegisterDto } from "../interfaces/dtos/user-register-dto.interface";
+import { RegisterDto } from "../interfaces/dtos/register-dto.interface";
+import { LoginDto } from "../interfaces/dtos/login-dto.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -16,26 +15,21 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private readonly apiEndpoints = {
-    login: 'auth/login',
-    register: 'auth/register'
-  };
-
+  private readonly loginUrl = environment.httpsUrl + '/login'
+  private readonly registerUrl = environment.httpsUrl + '/register'
   private readonly tokenKey = 'jwtToken';
 
-  login(loginDto: UserLoginDto): Observable<ServiceResponse<any>> {
-    return this.http.post<ServiceResponse<any>>(environment.httpsUrl + this.apiEndpoints.login, loginDto)
+  login(LoginDto: LoginDto): Observable<string> {
+    return this.http.post<string>(this.loginUrl, LoginDto)
       .pipe(
-        tap(response => {
-          if (response.success && response.data) {
-            localStorage.setItem(this.tokenKey, response.data);
-          }
+        tap(jwt => {
+            localStorage.setItem(this.tokenKey, jwt);
         })
       );
   }
 
-  register(registerDto: UserRegisterDto): Observable<ServiceResponse<any>> {
-    return this.http.post<ServiceResponse<any>>(environment.httpsUrl + this.apiEndpoints.register, registerDto);
+  register(registerDto: RegisterDto): Observable<any> {
+    return this.http.post<any>(this.registerUrl, registerDto);
   }
 
   logout() {

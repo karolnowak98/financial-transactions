@@ -63,6 +63,12 @@ public static class WebModule
             });
         });
         
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        });
+        
         services.AddAuthorization();
         services.AddCors();
         services.AddFastEndpoints();

@@ -2,7 +2,7 @@ using server.Operations.Users.Commands;
 
 namespace server.Web.Users;
 
-public class RegisterUser(ISender sender) : Endpoint<RegisterUserRequest>
+internal class RegisterUser(ISender sender) : Endpoint<RegisterUserRequest>
 {
     public override void Configure()
     {

@@ -1,6 +1,6 @@
 namespace server.Web.Users;
 
-public class RegisterUserValidator : Validator<RegisterUserRequest>
+internal class RegisterUserValidator : Validator<RegisterUserRequest>
 {
     public RegisterUserValidator()
     {
@@ -8,13 +8,17 @@ public class RegisterUserValidator : Validator<RegisterUserRequest>
             .NotEmpty()
             .WithMessage("First name is required.")
             .MinimumLength(DataSchemaConstants.DefaultMinNameLength)
-            .WithMessage($"First name must contain at least {DataSchemaConstants.DefaultMinNameLength} characters.");
+            .WithMessage($"First name must contain at least {DataSchemaConstants.DefaultMinNameLength} characters.")
+            .MaximumLength(DataSchemaConstants.DefaultMaxNameLength)
+            .WithMessage($"First name must contain less than {DataSchemaConstants.DefaultMaxNameLength} characters.");
         
         RuleFor(x => x.RegisterDto.LastName)
             .NotEmpty()
             .WithMessage("Last name is required.")
             .MinimumLength(DataSchemaConstants.DefaultMinNameLength)
-            .WithMessage($"Last name must contain at least {DataSchemaConstants.DefaultMinNameLength} characters.");
+            .WithMessage($"Last name must contain at least {DataSchemaConstants.DefaultMinNameLength} characters.")
+            .MaximumLength(DataSchemaConstants.DefaultMaxNameLength)
+            .WithMessage($"Last name must contain less than {DataSchemaConstants.DefaultMaxNameLength} characters.");
         
         RuleFor(x => x.RegisterDto.Email)
             .NotEmpty()

@@ -1,4 +1,6 @@
 global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using FromBody = FastEndpoints.FromBodyAttribute;
 
 global using FastEndpoints;
 global using MediatR;
