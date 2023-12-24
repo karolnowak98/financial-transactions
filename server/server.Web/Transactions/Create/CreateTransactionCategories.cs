@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using server.Infrastructure.Data.Config;
 using server.Operations.Transactions.Commands.Create;
 
 namespace server.Web.Transactions.Create;

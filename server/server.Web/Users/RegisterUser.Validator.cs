@@ -1,6 +1,3 @@
-using FluentValidation;
-using server.Infrastructure.Data.Config;
-
 namespace server.Web.Users;
 
 public class RegisterUserValidator : Validator<RegisterUserRequest>

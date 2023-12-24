@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using server.Core.UsersAggregate;
 using server.Infrastructure.Jwt;
 using server.Infrastructure.UserAggregate.Specifications;

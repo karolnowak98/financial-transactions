@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using server.Core.UsersAggregate;
-using server.Infrastructure.Data.Config;
 
 namespace server.Infrastructure.Data;
 

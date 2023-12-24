@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace server.Web.Users;
 
 public class LoginUserValidator : Validator<LoginUserRequest>

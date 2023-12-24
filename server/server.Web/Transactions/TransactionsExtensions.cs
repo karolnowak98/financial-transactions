@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using server.Infrastructure.Data.Config;
 
 namespace server.Web.Transactions;
 

@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using server.Infrastructure.Data.Config;
 using server.Operations.Transactions.Commands.Delete;
 
 namespace server.Web.Transactions.Delete;

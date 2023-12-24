@@ -1,13 +1,8 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.DependencyInjection;
 using server.Core.UsersAggregate;
 using server.Infrastructure.Data;
-using server.Infrastructure.Data.Config;
 using server.Infrastructure.Jwt;
 
 namespace server.Infrastructure;
@@ -28,9 +23,6 @@ public static class InfrastructureModule
             options.UseSqlServer(sqlConnection);
         });
 
-        //TODO consider what about that
-        services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
-        
         services
             .AddIdentity<AppUser, AppRole>()
             .AddEntityFrameworkStores<AppDbContext>()

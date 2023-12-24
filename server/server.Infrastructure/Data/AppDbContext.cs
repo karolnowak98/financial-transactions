@@ -1,14 +1,12 @@
-using System.Reflection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using server.Core.TransactionAggregate;
 using server.Core.UsersAggregate;
 
 namespace server.Infrastructure.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser, AppRole, Guid>(options), IAppDbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser, AppRole, Guid>(options)
 {
+    public IEnumerable<Transaction> Transactions => Set<Transaction>();
+    public IEnumerable<TransactionCategory> TransactionCategories => Set<TransactionCategory>();
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -29,7 +27,4 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
-
-    public IEnumerable<Transaction> Transactions => Set<Transaction>();
-    public IEnumerable<TransactionCategory> TransactionCategories => Set<TransactionCategory>();
 }

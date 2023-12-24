@@ -1,6 +1,4 @@
-using FluentValidation;
 using server.Core.TransactionAggregate;
-using server.Infrastructure.Data.Config;
 
 namespace server.Web.Transactions.Create;
 

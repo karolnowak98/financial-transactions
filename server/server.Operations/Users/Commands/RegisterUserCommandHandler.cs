@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using server.Core.UsersAggregate;
 using server.Infrastructure.Data.Config;
 using server.Infrastructure.UserAggregate.Specifications;

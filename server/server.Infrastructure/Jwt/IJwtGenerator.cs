@@ -1,5 +1,3 @@
-using System.Security.Claims;
-
 namespace server.Infrastructure.Jwt;
 
 public interface IJwtGenerator

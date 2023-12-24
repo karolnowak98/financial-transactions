@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using server.Core.TransactionAggregate;
 
 namespace server.Infrastructure.Data.Config;
 

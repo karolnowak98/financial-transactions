@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using server.Infrastructure.Data.Config;
 using server.Operations.Transactions.Queries.List;
 
 namespace server.Web.Transactions.Get;
