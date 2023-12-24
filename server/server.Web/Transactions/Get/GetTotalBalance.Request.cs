@@ -1,6 +1,6 @@
 namespace server.Web.Transactions.Get;
 
-public class GetUserAccountBalanceRequest
+public class GetTotalBalanceRequest
 {
     public const string Route = "/TotalBalance";
 }

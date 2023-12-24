@@ -3,11 +3,11 @@ using server.Core.TransactionAggregate.Specifications;
 
 namespace server.Operations.Transactions.Queries.Single;
 
-public class GetUserAccountBalanceQueryHandler(IReadRepository<Transaction> repo)
-    : IQueryHandler<GetUserAccountTotalBalanceQuery, Result<decimal>>
+public class GetTotalBalanceQueryHandler(IReadRepository<Transaction> repo)
+    : IQueryHandler<GetTotalBalanceQuery, Result<decimal>>
 {
     
-    public async Task<Result<decimal>> Handle(GetUserAccountTotalBalanceQuery req, CancellationToken ct)
+    public async Task<Result<decimal>> Handle(GetTotalBalanceQuery req, CancellationToken ct)
     {
         var spec = new TransactionsForUserSpec(req.UserId);
 

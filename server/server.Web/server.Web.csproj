@@ -40,6 +40,12 @@
       <Compile Update="Users\LoginUser.Validator.cs">
         <DependentUpon>LoginUser.cs</DependentUpon>
       </Compile>
+      <Compile Update="Transactions\Get\GetBalanceByCategory.Request.cs">
+        <DependentUpon>GetUserAccountBalanceByCategory.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Transactions\Get\GetBalanceByCategoryResponse.cs">
+        <DependentUpon>GetBalanceByCategory.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

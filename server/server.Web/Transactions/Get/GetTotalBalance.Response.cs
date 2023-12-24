@@ -1,6 +1,6 @@
 namespace server.Web.Transactions.Get;
 
-public class GetUserAccountTotalBalanceResponse
+public class GetTotalBalanceResponse
 {
     public decimal TotalBalance { get; set; }
 }
