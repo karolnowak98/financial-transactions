@@ -1,0 +1,31 @@
+<nav class="container navbar navbar-expand-md fixed-top py-2 my-4 px-2 justify-content-between">
+  <a href="/" class="navbar-brand">
+    <img ngSrc="./assets/logo.svg" alt="Logo" width="250" height="45" srcset="./assets/logo.svg 2x" sizes="50vw">
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Home</a>
+      </li>
+      <li *ngIf="authService.isLoggedIn()" class="nav-item">
+        <a type="button" class="nav-link">Add new task</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav">
+      <li *ngIf="authService.isLoggedIn()" class="nav-item dropdown">
+        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          Profile
+        </button>
+        <ul class="dropdown-menu">
+          <li><button type="button" class="dropdown-item btn-outline-light" (click)="authService.logout()">Log out</button></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
