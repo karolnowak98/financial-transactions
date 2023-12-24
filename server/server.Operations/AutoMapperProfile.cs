@@ -9,10 +9,10 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
+        CreateMap<RegisterDto, AppUser>();
+        
         CreateMap<CreateTransactionDto, Transaction>();
         CreateMap<TransactionDto, Transaction>();
         CreateMap<Transaction, TransactionDto>();
-        
-        CreateMap<RegisterDto, AppUser>();
     }
 }
