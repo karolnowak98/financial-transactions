@@ -43,9 +43,6 @@
       <Compile Update="Transactions\Get\GetBalanceByCategory.Request.cs">
         <DependentUpon>GetBalanceByCategory.cs</DependentUpon>
       </Compile>
-      <Compile Update="Transactions\Get\GetBalanceByCategoryResponse.cs">
-        <DependentUpon>GetBalanceByCategory.cs</DependentUpon>
-      </Compile>
       <Compile Update="Transactions\Create\CreateTransaction.Request.cs">
         <DependentUpon>CreateTransaction.cs</DependentUpon>
       </Compile>
@@ -55,20 +52,11 @@
       <Compile Update="Transactions\Create\CreateTransactionCategories.Request.cs">
         <DependentUpon>CreateTransactionCategories.cs</DependentUpon>
       </Compile>
-      <Compile Update="Transactions\Create\CreateTransactionCategories.Validator.cs">
-        <DependentUpon>CreateTransactionCategories.cs</DependentUpon>
+      <Compile Update="Transactions\Get\GetAllTransactionsByCategory.Request.cs">
+        <DependentUpon>GetAllTransactionsByCategory.cs</DependentUpon>
       </Compile>
-      <Compile Update="Transactions\Get\GetAllTransactionsByCategoryForUser.Request.cs">
-        <DependentUpon>GetAllTransactionsByCategoryForUser.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Transactions\Get\GetAllTransactionsByCategoryForUser.Response.cs">
-        <DependentUpon>GetAllTransactionsByCategoryForUser.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Transactions\Get\GetAllTransactionsForUser.Request.cs">
-        <DependentUpon>GetAllTransactionsForUser.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Transactions\Get\GetAllTransactionsForUserResponse.cs">
-        <DependentUpon>GetAllTransactionsForUser.cs</DependentUpon>
+      <Compile Update="Transactions\Get\GetAllTransactions.Request.cs">
+        <DependentUpon>GetAllTransactions.cs</DependentUpon>
       </Compile>
       <Compile Update="Transactions\Get\GetTotalBalance.Request.cs">
         <DependentUpon>GetTotalBalance.cs</DependentUpon>
@@ -79,11 +67,26 @@
       <Compile Update="Transactions\Get\GetTransactionById.Request.cs">
         <DependentUpon>GetTransactionById.cs</DependentUpon>
       </Compile>
-      <Compile Update="Transactions\Get\GetTransactionByIdResponse.cs">
-        <DependentUpon>GetTransactionById.cs</DependentUpon>
-      </Compile>
       <Compile Update="Transactions\Delete\DeleteTransaction.Request.cs">
         <DependentUpon>DeleteTransaction.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Transactions\Delete\DeleteTransaction.Validator.cs">
+        <DependentUpon>DeleteTransaction.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Transactions\Get\GetAllTransactionsByCategory.Validator.cs">
+        <DependentUpon>GetAllTransactionsByCategory.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Transactions\Get\GetBalanceByCategory.Response.cs">
+        <DependentUpon>GetBalanceByCategory.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Transactions\Get\GetBalanceByCategory.Validator.cs">
+        <DependentUpon>GetBalanceByCategory.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Transactions\Get\GetTransactionById.Response.cs">
+        <DependentUpon>GetTransactionById.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Transactions\Get\GetTransactionById.Validator.cs">
+        <DependentUpon>GetTransactionById.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

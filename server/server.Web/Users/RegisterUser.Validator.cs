@@ -6,36 +6,37 @@ internal class RegisterUserValidator : Validator<RegisterUserRequest>
     {
         RuleFor(x => x.RegisterDto.FirstName)
             .NotEmpty()
-            .WithMessage("First name is required.")
+            .WithMessage(ErrorMessages.RequiredFirstName)
             .MinimumLength(DataSchemaConstants.DefaultMinNameLength)
-            .WithMessage($"First name must contain at least {DataSchemaConstants.DefaultMinNameLength} characters.")
+            .WithMessage(ErrorMessages.FirstNameMustContainAtLeast)
             .MaximumLength(DataSchemaConstants.DefaultMaxNameLength)
-            .WithMessage($"First name must contain less than {DataSchemaConstants.DefaultMaxNameLength} characters.");
+            .WithMessage(ErrorMessages.FirstNameMustContainLessThan);
         
         RuleFor(x => x.RegisterDto.LastName)
             .NotEmpty()
-            .WithMessage("Last name is required.")
+            .WithMessage(ErrorMessages.RequiredLastName)
             .MinimumLength(DataSchemaConstants.DefaultMinNameLength)
-            .WithMessage($"Last name must contain at least {DataSchemaConstants.DefaultMinNameLength} characters.")
+            .WithMessage(ErrorMessages.LastNameMustContainAtLeast)
             .MaximumLength(DataSchemaConstants.DefaultMaxNameLength)
-            .WithMessage($"Last name must contain less than {DataSchemaConstants.DefaultMaxNameLength} characters.");
+            .WithMessage(ErrorMessages.LastNameMustContainLessThan);
         
         RuleFor(x => x.RegisterDto.Email)
             .NotEmpty()
-            .WithMessage("Email is required.")
+            .WithMessage(ErrorMessages.RequiredEmail)
             .EmailAddress()
-            .WithMessage("Invalid email format.");
+            .WithMessage(ErrorMessages.InvalidEmailFormat);
 
         RuleFor(x => x.RegisterDto.Password)
             .NotEmpty()
-            .WithMessage("Password is required")
+            .WithMessage(ErrorMessages.RequiredPassword)
             .MinimumLength(DataSchemaConstants.DefaultPasswordMinLength)
-            .WithMessage($"Password must contain at least {DataSchemaConstants.DefaultPasswordMinLength} characters.")
+            .WithMessage(ErrorMessages.PasswordMustContainAtLeast)
             .MaximumLength(DataSchemaConstants.DefaultPasswordMaxLength)
-            .Must(ContainsDigit).WithMessage("Password must contain a digit.")
-            .Must(ContainsLowercase).WithMessage("Password must contain a lowercase letter.")
-            .Must(ContainsUppercase).WithMessage("Password must contain an uppercase letter.")
-            .Must(ContainsNonAlphanumeric).WithMessage("Password must contain a non-alphanumeric character.");
+            .WithMessage(ErrorMessages.PasswordMustContainLessThan)
+            .Must(ContainsDigit).WithMessage(ErrorMessages.PasswordMustContainDigit)
+            .Must(ContainsLowercase).WithMessage(ErrorMessages.PasswordMustContainLowercase)
+            .Must(ContainsUppercase).WithMessage(ErrorMessages.PasswordMustContainUppercase)
+            .Must(ContainsNonAlphanumeric).WithMessage(ErrorMessages.PasswordMustContainNonAlphanumeric);
     }
     
     private static bool ContainsDigit(string password) => password.Any(char.IsDigit);

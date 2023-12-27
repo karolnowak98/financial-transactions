@@ -8,20 +8,17 @@ public class CreateTransactionValidator : Validator<CreateTransactionRequest>
     {
         RuleFor(x => x.CreateTransactionDto.Amount)
             .NotEmpty()
-            .WithMessage("Amount is required.")
+            .WithMessage(ErrorMessages.RequiredAmount)
             .GreaterThan(DataSchemaConstants.DefaultMinTransactionAmount)
             .LessThan(DataSchemaConstants.DefaultMaxTransactionAmount);
 
         RuleFor(x => x.CreateTransactionDto.DateTime)
             .NotEmpty()
-            .WithMessage("Date is required.");
+            .WithMessage(ErrorMessages.RequiredDateTime);
 
         RuleFor(x => x.CreateTransactionDto.CategoryType)
-            .Empty()
-            .When(x => x.CreateTransactionDto.CategoryType == null)
-            .NotEmpty()
-            .Must(value => Enum.TryParse<TransactionCategoryType>(value?.ToString(), out _))
-            .WithMessage("Invalid CategoryType.");
+            .Must(value => value == null || Enum.TryParse<TransactionCategoryType>(value.ToString(), out _))
+            .WithMessage(ErrorMessages.InvalidCategoryType);
 
         RuleFor(x => x.CreateTransactionDto.Description)
             .MaximumLength(DataSchemaConstants.DefaultDescriptionMaxLength);

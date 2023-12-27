@@ -1,6 +1,6 @@
 namespace server.Web.Users;
 
-public class LoginUserResponse(string jwtToken)
+public class LoginUserResponse
 {
-    public string JwtToken { get; set; } = jwtToken;
+    public string Jwt { get; set; }
 }

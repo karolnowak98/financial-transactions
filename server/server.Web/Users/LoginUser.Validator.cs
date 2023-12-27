@@ -6,16 +6,16 @@ public class LoginUserValidator : Validator<LoginUserRequest>
     {
         RuleFor(u => u.LoginDto.Email)
             .NotEmpty()
-            .WithMessage("Email is required.")
+            .WithMessage(ErrorMessages.RequiredEmail)
             .EmailAddress()
-            .WithMessage("Invalid email format.");
+            .WithMessage(ErrorMessages.InvalidEmailFormat);
 
         RuleFor(u => u.LoginDto.Password)
             .NotEmpty()
-            .WithMessage("Password is required.")
+            .WithMessage(ErrorMessages.RequiredPassword)
             .MinimumLength(DataSchemaConstants.DefaultPasswordMinLength)
-            .WithMessage($"Password must contain at least {DataSchemaConstants.DefaultPasswordMinLength} characters.")
+            .WithMessage(ErrorMessages.PasswordMustContainAtLeast)
             .MaximumLength(DataSchemaConstants.DefaultPasswordMaxLength)
-            .WithMessage($"Password must contain less than {DataSchemaConstants.DefaultPasswordMaxLength} characters.");
+            .WithMessage(ErrorMessages.PasswordMustContainLessThan);
     }
 }

@@ -11,7 +11,7 @@ import { LoginDto } from "../../../shared/interfaces/dtos/login-dto.interface";
   styleUrls: ['./login.component.css'],
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, RouterLink]
+  imports: [NgIf, RouterLink, ReactiveFormsModule]
 })
 
 export class LoginComponent {

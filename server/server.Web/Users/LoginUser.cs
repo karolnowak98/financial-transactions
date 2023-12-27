@@ -23,7 +23,7 @@ public class LoginUser(ISender sender) : Endpoint<LoginUserRequest, LoginUserRes
         
         if (result.IsSuccess)
         {
-            Response = new LoginUserResponse(result.Value);
+            Response = new LoginUserResponse { Jwt = result.Value };
         }
     }
 }

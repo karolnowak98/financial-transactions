@@ -1,17 +1,18 @@
+using server.Operations.Transactions.Dtos;
 using server.Operations.Transactions.Queries.List;
 
 namespace server.Web.Transactions.Get;
 
 [Authorize(Roles = StaticAppUserRoles.User)]
-public class GetAllTransactionsByCategoryForUser(ISender sender)
-    : Endpoint<GetAllTransactionsByCategoryForUserRequest, GetAllTransactionsByCategoryForUserResponse>
+public class GetAllTransactionsByCategory(ISender sender)
+    : Endpoint<GetAllTransactionsByCategoryRequest, IEnumerable<TransactionDto>>
 {
     public override void Configure()
     {
-        Get(GetAllTransactionsByCategoryForUserRequest.Route);
+        Get(GetAllTransactionsByCategoryRequest.Route);
     }
 
-    public override async Task HandleAsync(GetAllTransactionsByCategoryForUserRequest req, CancellationToken ct)
+    public override async Task HandleAsync(GetAllTransactionsByCategoryRequest req, CancellationToken ct)
     {
         var currentUserId = HttpContext.GetCurrentUserId();
         
@@ -26,7 +27,7 @@ public class GetAllTransactionsByCategoryForUser(ISender sender)
 
         if (result.IsSuccess)
         {
-            Response = new GetAllTransactionsByCategoryForUserResponse { Transactions = result.Value.ToList()};
+            Response = result.Value;
         }
     }
 }

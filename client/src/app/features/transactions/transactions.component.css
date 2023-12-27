@@ -1,0 +1,28 @@
+.bars-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.red-bar,
+.green-bar {
+  width: 5px;
+  height: 55px;
+  position: relative;
+}
+
+.red-bar {
+  background-color: red;
+}
+
+.green-bar {
+  background-color: green;
+}
+
+.green-text {
+  color: green;
+}
+
+.red-text {
+  color:red;
+}

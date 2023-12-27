@@ -2,7 +2,7 @@ using server.Core.TransactionAggregate;
 
 namespace server.Web.Transactions.Get;
 
-public class GetAllTransactionsByCategoryForUserRequest
+public class GetAllTransactionsByCategoryRequest
 {
     public const string Route = "/transactions/{Type}";
 

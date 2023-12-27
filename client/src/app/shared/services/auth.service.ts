@@ -1,7 +1,7 @@
 import { inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 import { environment } from "../utils/environment";
 import { RegisterDto } from "../interfaces/dtos/register-dto.interface";
@@ -17,13 +17,18 @@ export class AuthService {
 
   private readonly loginUrl = environment.httpsUrl + '/login'
   private readonly registerUrl = environment.httpsUrl + '/register'
-  private readonly tokenKey = 'jwtToken';
+  private readonly tokenKey = 'jwt';
 
   login(LoginDto: LoginDto): Observable<string> {
-    return this.http.post<string>(this.loginUrl, LoginDto)
+    return this.http.post<{ jwt: string }>(this.loginUrl, LoginDto)
       .pipe(
+        map(response => response.jwt),
         tap(jwt => {
+          if (jwt) {
             localStorage.setItem(this.tokenKey, jwt);
+          } else {
+            console.error('Invalid response format');
+          }
         })
       );
   }

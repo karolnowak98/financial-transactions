@@ -1,4 +1,4 @@
-<nav class="container navbar navbar-expand-md fixed-top py-2 my-4 px-2 justify-content-between">
+<nav class="container navbar navbar-expand-md fixed-top py-2 my-4 px-2 justify-content-between bg-dark">
   <a href="/" class="navbar-brand">
     <img ngSrc="./assets/logo.svg" alt="Logo" width="250" height="45" srcset="./assets/logo.svg 2x" sizes="50vw">
   </a>
@@ -9,11 +9,11 @@
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <li class="nav-item">
-        <a class="nav-link active" href="#">Home</a>
+      <li *ngIf="authService.isLoggedIn()" class="nav-item">
+        <a type="button" class="nav-link">Transactions</a>
       </li>
       <li *ngIf="authService.isLoggedIn()" class="nav-item">
-        <a type="button" class="nav-link">Add new task</a>
+        <a type="button" class="nav-link">Summary</a>
       </li>
     </ul>
 
@@ -23,6 +23,7 @@
           Profile
         </button>
         <ul class="dropdown-menu">
+          <li><button type="button" class="dropdown-item btn-outline-light">Summary</button></li>
           <li><button type="button" class="dropdown-item btn-outline-light" (click)="authService.logout()">Log out</button></li>
         </ul>
       </li>

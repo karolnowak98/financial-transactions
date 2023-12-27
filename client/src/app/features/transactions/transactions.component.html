@@ -1,21 +1,135 @@
-<!--<div class="container mt-5">-->
-<!--  <h2 class="mb-4 text-center">Tasks</h2>-->
-<!--  <div class="overflow-auto">-->
-<!--    <div *ngFor="let task of tasks" class="card mb-3">-->
-<!--      <div class="card-body">-->
-<!--        <div class="d-flex justify-content-between align-items-center">-->
-<!--          <h3 class="card-title">{{ task.title }}</h3>-->
-<!--          <div class="form-check">-->
-<!--            <input class="form-check-input" type="checkbox" [checked]="task.status == 'Completed'" (change)="toggleTaskStatus(task.id, task.status)">-->
-<!--            <label class="form-check-label">Completed</label>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <p class="card-text">Description: {{ task.description }}</p>-->
-<!--        <p class="card-text">Deadline: {{ task.deadline | date:'medium' }}</p>-->
-<!--        <p class="card-text">Priority: {{ task.priority }}</p>-->
-<!--        <p class="card-text">Categories: {{ task.categories }}</p>-->
-<!--        <button type="button" class="btn btn-primary" (click)="editTask(task)">Edit Task</button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+<div class="container mt-5 pt-5 position-relative">
+  <h2 class="mb-4 text-center">Transactions</h2>
+
+  <div class="d-flex justify-content-between mb-3">
+    <div class="mb-3">
+      <button class="btn btn-secondary" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Filter Transactions <i class="fas fa-caret-down"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+        <div class="d-flex flex-wrap">
+          <!-- Income/Expense filter -->
+          <li class="me-2 align-self-center m-2">
+            <label class="dropdown-item">
+              <input type="checkbox" [formControl]="showIncome" /> Income
+            </label>
+
+            <label class="dropdown-item">
+              <input type="checkbox" [formControl]="showExpense" /> Expense
+            </label>
+          </li>
+
+          <li class="me-3 align-self-center m-2">
+            <select class="form-select" [formControl]="selectedCategory">
+              <option value="" selected>All Categories</option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
+          </li>
+
+          <li class="me-3 align-self-center m-2">
+            <select class="form-select" [formControl]="selectedDateFilter">
+              <option value="" selected>All Dates</option>
+              <option value="thisYear">This Year</option>
+              <option value="thisMonth">This Month</option>
+              <option value="thisWeek">This Week</option>
+            </select>
+          </li>
+        </div>
+      </ul>
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-success rounded-circle fab" (click)="showModal()" data-bs-target="#newTransactionModal">
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="d-flex justify-content-between mb-3">
+    <div class="d-flex align-items-center">
+      <span class="me-3">Transactions: {{ filteredTransactions().length }}</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <span>Total Amount:  </span>&nbsp;
+      <span [ngClass]="{'green-text': getTotalAmount() > 0, 'red-text': getTotalAmount() < 0, 'white-text': getTotalAmount() === 0}">
+        {{ getTotalAmount() }} €</span>
+    </div>
+  </div>
+
+  <!-- Transactions cards -->
+  <div class="overflow-auto">
+    <div *ngFor="let transaction of filteredTransactions()" class="card mb-3">
+      <div class="card-body d-flex justify-content-between align-items-start m-2">
+        <div class="d-flex flex-column">
+          <h6 class="card-subtitle mb-3 text-muted">{{ transaction.categoryType ?? 'Uncategorized' }}</h6>
+          <p class="card-text">{{ transaction.description }}</p>
+        </div>
+        <div class="d-flex flex-column align-items-end">
+          <div class="d-flex align-items-center">
+            <div class="d-flex flex-column align-items-end">
+              <h5 class="card-title">{{ transaction.amount }} €</h5>
+              <p class="card-text">{{ transaction.dateTime | date:'dd/MM/yyyy hh:mm a' }}</p>
+            </div>
+            <!-- Three dots -->
+            <div class="dropdown">
+              <button class="btn btn-link" type="button" id="transactionActions" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical fs-4"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="transactionActions">
+                <li><a class="dropdown-item" href="#">Edit Transaction</a></li>
+                <li><a class="dropdown-item" (click)="onDeleteTransaction(transaction.id)">Delete Transaction</a></li>
+              </ul>
+            </div>
+            <div class="bars-container">
+              <div *ngIf="transaction.amount >= 0" class="green-bar"></div>
+              <div *ngIf="transaction.amount < 0" class="red-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="newTransactionModal" #newTransactionModal tabindex="-1" aria-labelledby="newTransactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newTransactionModalLabel">New Transaction</h5>
+          <button type="button" class="btn-close" (click)="hideModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="newTransactionForm" (ngSubmit)="onAddTransaction()">
+            <div class="mb-3">
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" class="form-control" id="amount" formControlName="amount" placeholder="" required>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <input type="text" class="form-control" id="description" formControlName="description">
+            </div>
+            <div class="mb-3">
+              <label for="categoryType" class="form-label">Category</label>
+              <select class="form-select" id="categoryType" formControlName="categoryType">
+                <option value="" selected></option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+              </select>
+            </div>
+
+            <div *ngIf="formSubmitted && newTransactionForm.invalid" class="text-danger">
+              <div *ngIf="newTransactionForm.get('amount')?.hasError('required')">Amount is required.</div>
+              <div *ngIf="newTransactionForm.get('amount')?.hasError('min')">Amount must be greater than or equal to -999999.</div>
+              <div *ngIf="newTransactionForm.get('amount')?.hasError('max')">Amount must be less than or equal to 999999.</div>
+              <div *ngIf="newTransactionForm.get('amount')?.hasError('pattern')">Amount must have up to two decimal places.</div>
+            </div>
+            <div class="card-body d-flex justify-content-between mx-5 mt-3">
+              <button type="submit" class="btn btn-primary">Add new transaction</button>
+              <button type="button" class="btn btn-secondary" (click)="hideModal()" >Close</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ namespace server.Infrastructure.Data.Config;
 
 public static class DataSchemaConstants
 {
-    public const int DefaultMinTransactionAmount = 0;
+    public const int DefaultMinTransactionAmount = -9999999;
     public const int DefaultMaxTransactionAmount = 9999999;
     
     public const int DefaultDescriptionMaxLength = 255;

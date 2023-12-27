@@ -1,6 +1,6 @@
 namespace server.Web.Transactions.Get;
 
-public class GetAllForUserRequest
+public class GetAllTransactionsRequest
 {
     public const string Route = "/transactions";
 }
