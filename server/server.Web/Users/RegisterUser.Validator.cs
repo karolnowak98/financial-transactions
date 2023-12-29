@@ -1,6 +1,6 @@
 namespace server.Web.Users;
 
-internal class RegisterUserValidator : Validator<RegisterUserRequest>
+public class RegisterUserValidator : Validator<RegisterUserRequest>
 {
     public RegisterUserValidator()
     {

@@ -1,3 +1,4 @@
+<app-toast></app-toast>
 <div class="container mt-5 pt-5 position-relative">
   <h2 class="mb-4 text-center">Transactions</h2>
 
@@ -8,7 +9,6 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="filterDropdown">
         <div class="d-flex flex-wrap">
-          <!-- Income/Expense filter -->
           <li class="me-2 align-self-center m-2">
             <label class="dropdown-item">
               <input type="checkbox" [formControl]="showIncome" /> Income
@@ -78,7 +78,7 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="transactionActions">
                 <li><a class="dropdown-item" href="#">Edit Transaction</a></li>
-                <li><a class="dropdown-item" (click)="onDeleteTransaction(transaction.id)">Delete Transaction</a></li>
+                <li><a class="btn dropdown-item" (click)="onDeleteTransaction(transaction.id)">Delete Transaction</a></li>
               </ul>
             </div>
             <div class="bars-container">

@@ -1,30 +1,45 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
-import { NgIf } from "@angular/common";
+import { NgClass, NgIf } from "@angular/common";
+import { catchError } from "rxjs/operators";
+import { finalize, of, Subscription } from "rxjs";
 
 import { AuthService } from "../../../shared/services/auth.service";
 import { LoginDto } from "../../../shared/interfaces/dtos/login-dto.interface";
+import { ModalComponent } from "../../../shared/components/modal/modal.component";
+import { ModalButtonConfig } from "../../../shared/interfaces/configs/modal-button-config.interface";
+import { SharedModule } from "../../../shared/shared.module";
+import { LoaderService } from "../../../shared/services/loader.service";
+import { ModalButtonClassType } from "../../../shared/enums/modal-button-class-type.enum";
 
 @Component({
   selector: 'app-login',
-  styleUrls: ['./login.component.css'],
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [NgIf, RouterLink, ReactiveFormsModule]
+  imports: [NgIf, RouterLink, ReactiveFormsModule, NgClass, SharedModule]
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy{
+  @ViewChild(ModalComponent, { static: false }) loginModal?: ModalComponent;
 
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private fb = inject(FormBuilder);
-
-  userLoginDto: LoginDto = { email: '', password: '' };
+  readonly authService = inject(AuthService);
+  readonly loaderService = inject(LoaderService);
+  readonly fb = inject(FormBuilder);
+  readonly router = inject(Router);
 
   form: FormGroup;
+  loadingSubscription?: Subscription;
+  userLoginDto: LoginDto = { email: '', password: '' };
+  modalButtons: ModalButtonConfig[] = [
+    { label: 'Try again', action: 'tryAgain', classType: ModalButtonClassType.Primary },
+    { label: 'Close', action: 'close', classType: ModalButtonClassType.Danger }
+  ];
   formSubmitted: boolean = false;
   showPassword: boolean = false;
+  isLoading: boolean = false;
+  modalMessage = '';
+  modalTitle = '';
 
   constructor() {
     this.form = this.fb.group({
@@ -37,14 +52,47 @@ export class LoginComponent {
     }
   }
 
+  ngOnInit(): void {
+    this.loadingSubscription = this.loaderService.loadingState$.subscribe(isLoading => {
+      this.isLoading = isLoading;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.loadingSubscription?.unsubscribe();
+  }
+
+  onModalBtnClick(action: string) {
+    this.loginModal?.hideModal();
+    if (action === 'tryAgain') {
+      this.form.markAsDirty();
+      this.onLogin();
+    }
+  }
+
   onLogin() {
     this.formSubmitted = true;
 
-    if (!this.form.valid) return;
+    if (this.isLoading || !this.form.valid) return;
 
+    this.loaderService.setLoadingState(true);
     this.userLoginDto = { ...this.form.value };
-    this.authService.login(this.userLoginDto)
-      .subscribe({
+
+    this.authService.login(this.userLoginDto).pipe(
+      catchError((errorResponse) => {
+        this.modalTitle = "Error!";
+        if (errorResponse.status === 0) {
+          this.modalMessage = "Server does not respond.";
+        } else {
+          this.modalMessage = "Invalid credentials. Please check your email and password.";
+        }
+        this.loginModal?.showModal();
+        return of(null);
+      }),
+      finalize(() => {
+        this.loaderService.setLoadingState(false);
+      })
+    ).subscribe({
         next: (jwt) => {
           if(jwt !== null)
             this.router.navigateByUrl('/transactions');
@@ -53,7 +101,5 @@ export class LoginComponent {
       )
   }
 
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
-  }
+  togglePasswordVisibility() {this.showPassword = !this.showPassword;}
 }

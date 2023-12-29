@@ -1,34 +1,41 @@
-import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
-import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 
-import {TransactionService} from "../../services/transaction.service";
-import {TransactionDto} from "../../shared/interfaces/dtos/transactions/transaction-dto.interface";
-import {NewTransactionDto} from "../../shared/interfaces/dtos/transactions/new-transaction-dto.interface";
+import { TransactionService } from "../../services/transaction.service";
+import { TransactionDto } from "../../shared/interfaces/dtos/transactions/transaction-dto.interface";
+import { NewTransactionDto } from "../../shared/interfaces/dtos/transactions/new-transaction-dto.interface";
+import { LoaderService } from "../../shared/services/loader.service";
+import { EMPTY, finalize, Subscription } from "rxjs";
+import { catchError } from "rxjs/operators";
+import { ToastrService } from 'ngx-toastr';
+import { ToastComponent } from "../../shared/components/toast/toast.component";
 
 @Component({
   selector: 'app-transactions',
   styleUrls: ['./transactions.component.css'],
   templateUrl: './transactions.component.html',
   standalone: true,
-  imports: [NgForOf, NgIf, DatePipe, ReactiveFormsModule, NgClass]
+  imports: [NgForOf, NgIf, DatePipe, ReactiveFormsModule, NgClass, ToastComponent]
 })
-export class TransactionsComponent implements OnInit {
+export class TransactionsComponent implements OnInit, OnDestroy {
   @ViewChild('newTransactionModal', {static: false}) newTransactionModal?: ElementRef;
 
-  private transactionService = inject(TransactionService);
-  private fb = inject(FormBuilder);
+  readonly transactionService = inject(TransactionService);
+  readonly loaderService = inject(LoaderService);
+  readonly toastsService = inject(ToastrService);
+  readonly fb = inject(FormBuilder);
+  readonly showIncome = this.fb.control(true);
+  readonly showExpense = this.fb.control(true);
+  readonly selectedCategory = this.fb.control('');
+  readonly selectedDateFilter = this.fb.control('');
 
-  showIncome = this.fb.control(true);
-  showExpense = this.fb.control(true);
-  selectedCategory = this.fb.control('');
-  selectedDateFilter = this.fb.control('');
-
+  loadingSubscription?: Subscription;
   newTransactionForm: FormGroup;
-  formSubmitted: boolean = false;
-
   transactions: TransactionDto[] = [];
   categories: string[] = [];
+  formSubmitted: boolean = false;
+  isLoading: boolean = false;
 
   constructor() {
     this.newTransactionForm = this.fb.group({
@@ -45,6 +52,13 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTransactions();
+    this.loadingSubscription = this.loaderService.loadingState$.subscribe(isLoading => {
+      this.isLoading = isLoading;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.loadingSubscription?.unsubscribe();
   }
 
   hideModal(){
@@ -53,36 +67,49 @@ export class TransactionsComponent implements OnInit {
     document.querySelector('.modal-backdrop')?.classList.remove('show');
     (document.querySelector('.modal-backdrop') as HTMLElement).style.display = 'none';
     document.querySelector('.modal-backdrop')?.remove();
-
   }
 
   showModal(){
     (this.newTransactionModal?.nativeElement as HTMLElement).style.display = 'block';
     (this.newTransactionModal?.nativeElement as HTMLElement).classList.add('show');
-
     document.body.classList.add('modal-open');
-
     let element = document.createElement('div');
-
     element.className = 'modal-backdrop fade show';
-
     element.style.display = 'block';
-
     document.body.appendChild(element);
   }
 
   loadTransactions(): void {
+    if(this.isLoading) return;
+
+    this.loaderService.setLoadingState(true);
+
     this.transactionService.getAllTransactions()
+      .pipe(
+        catchError((error) => {
+          if (error.status === 0) {
+            this.toastsService.error('Server does not respond!','Error!')
+          }
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.loaderService.setLoadingState(false);
+        })
+      )
       .subscribe((transactionsDtos) => {
-        this.transactions = transactionsDtos;
-        this.categories = this.extractCategories(this.transactions);
+        if (transactionsDtos != null) {
+          this.transactions = transactionsDtos;
+          this.categories = this.extractCategories(this.transactions);
+        }
       });
   }
 
   onAddTransaction(): void {
     this.formSubmitted = true;
 
-    if(!this.newTransactionForm.valid) return;
+    if(this.isLoading || !this.newTransactionForm.valid) return;
+
+    this.loaderService.setLoadingState(true);
 
     const newTransactionDto: NewTransactionDto = {
       amount: this.newTransactionForm.get('amount')!.value,
@@ -92,14 +119,37 @@ export class TransactionsComponent implements OnInit {
       description: this.newTransactionForm.get('description')!.value ?? null
     }
 
-    //TODO Add error handling
-    this.transactionService.addTransaction(newTransactionDto).subscribe();
+    this.transactionService.addTransaction(newTransactionDto).pipe(
+      catchError((errorResponse) => {
+        if (errorResponse.status === 0) {
+          this.toastsService.error('Server does not respond!','Error!')
+        }
+        return EMPTY;
+      }),
+      finalize(() => {
+        this.loaderService.setLoadingState(false);
+      })
+    ).subscribe();
     this.newTransactionForm.reset();
     this.hideModal();
   }
 
   onDeleteTransaction(transactionId: string): void {
-    this.transactionService.deleteTransaction(transactionId).subscribe();
+    if(this.isLoading) return;
+
+    this.loaderService.setLoadingState(true);
+
+    this.transactionService.deleteTransaction(transactionId).pipe(
+      catchError((errorResponse) => {
+        if (errorResponse.status === 0) {
+          this.toastsService.error('Server does not respond!','Error!')
+        }
+        return EMPTY;
+      }),
+      finalize(() => {
+        this.loaderService.setLoadingState(false);
+      })
+    ).subscribe();
   }
 
   getTotalAmount(): number {

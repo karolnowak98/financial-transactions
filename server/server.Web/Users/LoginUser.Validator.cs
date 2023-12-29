@@ -12,10 +12,6 @@ public class LoginUserValidator : Validator<LoginUserRequest>
 
         RuleFor(u => u.LoginDto.Password)
             .NotEmpty()
-            .WithMessage(ErrorMessages.RequiredPassword)
-            .MinimumLength(DataSchemaConstants.DefaultPasswordMinLength)
-            .WithMessage(ErrorMessages.PasswordMustContainAtLeast)
-            .MaximumLength(DataSchemaConstants.DefaultPasswordMaxLength)
-            .WithMessage(ErrorMessages.PasswordMustContainLessThan);
+            .WithMessage(ErrorMessages.RequiredPassword);
     }
 }

@@ -1,4 +1,4 @@
-import { inject, Injectable} from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
@@ -11,26 +11,25 @@ import { LoginDto } from "../interfaces/dtos/login-dto.interface";
   providedIn: 'root'
 })
 export class AuthService {
-
-  private http = inject(HttpClient);
-  private router = inject(Router);
-
-  private readonly loginUrl = environment.httpsUrl + '/login'
-  private readonly registerUrl = environment.httpsUrl + '/register'
-  private readonly tokenKey = 'jwt';
+  readonly http = inject(HttpClient);
+  readonly router = inject(Router);
+  readonly loginUrl = environment.httpsUrl + '/login'
+  readonly registerUrl = environment.httpsUrl + '/register'
+  readonly tokenKey = 'jwt';
+  tokenExpirationTimer: any;
 
   login(LoginDto: LoginDto): Observable<string> {
-    return this.http.post<{ jwt: string }>(this.loginUrl, LoginDto)
-      .pipe(
-        map(response => response.jwt),
-        tap(jwt => {
-          if (jwt) {
-            localStorage.setItem(this.tokenKey, jwt);
-          } else {
-            console.error('Invalid response format');
-          }
-        })
-      );
+    return this.http.post<{ jwt: string }>(this.loginUrl, LoginDto).pipe(
+      map((response) => response.jwt),
+      tap((jwt) => {
+        if (jwt) {
+          localStorage.setItem(this.tokenKey, jwt);
+          this.setLogoutTimer();
+        } else {
+          console.error('Invalid response format');
+        }
+      }),
+    );
   }
 
   register(registerDto: RegisterDto): Observable<any> {
@@ -40,14 +39,28 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.tokenKey);
     this.router.navigateByUrl('/');
+    this.clearLogoutTimer();
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
+  getToken(): string | null {return localStorage.getItem(this.tokenKey);}
+  isLoggedIn(): boolean {return (this.getToken() != null);}
 
-  isLoggedIn(): boolean {
+  private setLogoutTimer() {
     const token = this.getToken();
-    return token !== null;
+    if (token) {
+      const tokenData = JSON.parse(atob(token.split('.')[1]));
+      const expirationTime = tokenData.exp * 1000 - Date.now();
+
+      this.tokenExpirationTimer = setTimeout(() => {
+        this.logout();
+      }, expirationTime);
+    }
+  }
+
+  private clearLogoutTimer() {
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+      this.tokenExpirationTimer = null;
+    }
   }
 }

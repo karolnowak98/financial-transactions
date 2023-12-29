@@ -1,0 +1,22 @@
+<div class="modal fade" #modal tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" [appLoading]="loaderService.loadingState$ | async">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ modalTitle }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hideModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p [innerHTML]="modalMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button *ngFor="let button of modalButtons"
+                type="button"
+                class="btn"
+                [ngClass]="button.classType"
+                (click)="onButtonClicked(button.action)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

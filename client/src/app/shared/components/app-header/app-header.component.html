@@ -1,29 +1,25 @@
-<nav class="container navbar navbar-expand-md fixed-top py-2 my-4 px-2 justify-content-between bg-dark">
-  <a href="/" class="navbar-brand">
-    <img ngSrc="./assets/logo.svg" alt="Logo" width="250" height="45" srcset="./assets/logo.svg 2x" sizes="50vw">
+<nav class="container navbar navbar-expand-md fixed-top justify-content-between bg-dark">
+  <a class="navbar-brand" href="#" >
+    <img ngSrc="./assets/logo.svg" alt="Logo" width="250" height="45" srcset="./assets/logo.svg 2x" sizes="50vw" priority="high">
   </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+  <button *ngIf="authService.isLoggedIn()" class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+  <div *ngIf="authService.isLoggedIn()" class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li *ngIf="authService.isLoggedIn()" class="nav-item">
-        <a type="button" class="nav-link">Transactions</a>
-      </li>
-      <li *ngIf="authService.isLoggedIn()" class="nav-item">
-        <a type="button" class="nav-link">Summary</a>
+        <a type="button" class="nav-link" href="#">Transactions</a>
       </li>
     </ul>
 
     <ul class="navbar-nav">
-      <li *ngIf="authService.isLoggedIn()" class="nav-item dropdown">
-        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           Profile
-        </button>
-        <ul class="dropdown-menu">
-          <li><button type="button" class="dropdown-item btn-outline-light">Summary</button></li>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
           <li><button type="button" class="dropdown-item btn-outline-light" (click)="authService.logout()">Log out</button></li>
         </ul>
       </li>
