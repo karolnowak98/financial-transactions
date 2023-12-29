@@ -1,6 +1,6 @@
 # financial-transactions
 
-Description: It's financial-transactions app. User can register, sign in, manage their financial transactions correlated with user account.
+Description: It's financial-transactions app. User can register, sign in, manage their financial transactions correlated with user account. Clean architecture, layered.
 
 Programming languages: C#, Typescript, HTML5, CSS3
 
