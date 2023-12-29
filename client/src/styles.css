@@ -1,25 +1,3 @@
-.toast-top-center {
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, 0);
+.toast-center-top{
+  padding-top: 410px;
 }
-
-.custom-toast {
-  padding: 10px;
-  background-color: #343a40;
-  color: #f64f60;
-  border: 2px solid #ea838e;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.custom-toast .toast-title {
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.custom-toast .toast-message {
-  font-size: 16px;
-}
-

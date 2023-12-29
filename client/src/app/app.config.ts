@@ -8,6 +8,6 @@ import { provideToastr } from "ngx-toastr";
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes, withComponentInputBinding()),
-    provideToastr({toastClass:'custom-toast', positionClass: 'toast-top-center', timeOut: 4000}),
+    provideToastr({timeOut: 4000, positionClass:'toast-center-top'}),
     provideAnimations(), provideHttpClient()],
 };

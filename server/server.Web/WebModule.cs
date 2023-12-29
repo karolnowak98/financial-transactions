@@ -33,7 +33,6 @@ public static class WebModule
                 };
             });
         
-        
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Financial Api", Version = "v1" });

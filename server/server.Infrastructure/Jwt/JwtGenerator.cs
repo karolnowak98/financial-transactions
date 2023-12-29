@@ -8,7 +8,7 @@ public class JwtGenerator(IConfiguration configuration) : IJwtGenerator
 {
     private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-    public string? GenerateToken(IEnumerable<Claim> claims, int hoursToExpire = 1)
+    public string? GenerateToken(IEnumerable<Claim> claims)
     {
         var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"] ?? "defaultSecret"));
         var issuer = _configuration["JWT:ValidIssuer"] ?? "defaultIssuer";
@@ -17,7 +17,7 @@ public class JwtGenerator(IConfiguration configuration) : IJwtGenerator
         var tokenObj = new JwtSecurityToken(
             issuer: issuer,
             audience: audience,
-            expires: DateTime.Now.AddHours(hoursToExpire),
+            expires: DateTime.Now.AddHours(JwtConfig.HoursToExpire),
             claims: claims,
             signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)
         );

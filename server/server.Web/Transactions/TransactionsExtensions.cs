@@ -4,11 +4,8 @@ namespace server.Web.Transactions;
 
 public static class TransactionsExtensions
 {
-    public static bool IsUser(this HttpContext context)
-        => context.User.IsInRole(StaticAppUserRoles.User);
-    
-    public static bool IsAdmin(this HttpContext context)
-        => context.User.IsInRole(StaticAppUserRoles.Admin);
+    public static bool IsUser(this HttpContext context) => context.User.IsInRole(StaticAppUserRoles.User);
+    public static bool IsAdmin(this HttpContext context) => context.User.IsInRole(StaticAppUserRoles.Admin);
 
     public static Guid? GetCurrentUserId(this HttpContext context)
     {

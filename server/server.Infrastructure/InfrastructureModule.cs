@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-
 using Microsoft.Extensions.DependencyInjection;
 using server.Core.UsersAggregate;
 using server.Infrastructure.Data;
@@ -11,7 +10,6 @@ public static class InfrastructureModule
 {
     private const string SqlServerConnection = "SqlServerConnection";
     
-    //TODO consider breaking it down into smaller methods
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         var sqlConnection  = configuration.GetConnectionString("SqlServerConnection");

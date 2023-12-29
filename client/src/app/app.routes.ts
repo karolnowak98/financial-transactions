@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+
 import { RegisterComponent } from "./features/auth/register/register.component";
 import { LoginComponent } from "./features/auth/login/login.component";
 import { TransactionsComponent } from "./features/transactions/transactions.component";
