@@ -16,12 +16,7 @@
       <PackageReference Include="Autofac" Version="7.1.0" />
       <PackageReference Include="AutoMapper" Version="12.0.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Identity.Stores">
-        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.0\Microsoft.Extensions.Identity.Stores.dll</HintPath>
-      </Reference>
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     </ItemGroup>
 
 </Project>
