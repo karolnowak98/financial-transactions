@@ -97,11 +97,23 @@ export class RegisterComponent implements OnInit, OnDestroy{
         catchError((errorResponse) => {
           this.modalTitle = "Error!";
           this.modalButtons = this.failureModalButtons;
+
           if (errorResponse.status === 0) {
             this.modalMessage = "Server does not respond!";
+          } else if (errorResponse.error.errors) {
+            const errorMessage = Object.keys(errorResponse.error.errors)
+              .map(field => {
+                const errorsForField = errorResponse.error.errors[field];
+                const formattedErrors = Array.isArray(errorsForField)
+                  ? errorsForField.join(', ') : errorsForField;
+                return `${formattedErrors}`;
+              })
+              .join('<br>');
+            this.modalMessage = `Couldn't register user because: <br> ${errorMessage}`;
           } else {
-            this.modalMessage = `Couldn't register user because: <br> ${errorResponse.error}`;
+            this.modalMessage = errorResponse.error;
           }
+
           this.registerModal?.showModal();
           return EMPTY;
         }),
@@ -109,13 +121,13 @@ export class RegisterComponent implements OnInit, OnDestroy{
           this.loaderService.setLoadingState(false);
         })
       ).subscribe({
-        next: (_ : any) => {
-            this.modalTitle = "Success!";
-            this.modalMessage = "Successfully created User";
-            this.modalButtons = this.successModalButtons;
-            this.registerModal?.showModal();
-        }
-      });
+      next: (_: any) => {
+        this.modalTitle = "Success!";
+        this.modalMessage = "Successfully created User";
+        this.modalButtons = this.successModalButtons;
+        this.registerModal?.showModal();
+      }
+    });
   }
 
   togglePasswordVisibility() {this.showPassword = !this.showPassword;}

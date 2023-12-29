@@ -11,35 +11,21 @@ import { TransactionDto } from "../shared/interfaces/dtos/transactions/transacti
 })
 export class TransactionService {
   readonly http = inject(HttpClient);
-  readonly getAllUrl = environment.httpsUrl + '/transactions';
-  readonly addTransactionUrl = environment.httpsUrl + '/transactions/create';
-  readonly deleteTransactionUrl = environment.httpsUrl + '/transactions/delete';
+  readonly httpUrl = environment.httpsUrl + '/transactions';
+  readonly headers = new HttpHeaders({
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+  });
 
-  getAllTransactions() : Observable<any> {
-    const token = localStorage.getItem('jwt');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    })
-
-    return this.http.get<any>(this.getAllUrl, { headers });
+  getAllTransactions(): Observable<any> {
+    return this.http.get<any>(this.httpUrl, { headers: this.headers });
   }
 
   addTransaction(newTransaction: NewTransactionDto): Observable<TransactionDto> {
-    const token = localStorage.getItem('jwt');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    return this.http.post<TransactionDto>(this.addTransactionUrl, newTransaction, { headers });
+    return this.http.post<TransactionDto>(this.httpUrl + '/create', newTransaction, { headers: this.headers });
   }
 
   deleteTransaction(transactionId: string): Observable<any> {
-    const url = `${this.deleteTransactionUrl}/${transactionId}`;
-    const token = localStorage.getItem('jwt');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    return this.http.delete<any>(url, { headers });
+    const url = `${this.httpUrl}/delete/${transactionId}`;
+    return this.http.delete<any>(url, { headers: this.headers });
   }
 }

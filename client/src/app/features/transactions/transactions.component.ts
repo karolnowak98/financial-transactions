@@ -86,10 +86,8 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
     this.transactionService.getAllTransactions()
       .pipe(
-        catchError((error) => {
-          if (error.status === 0) {
-            this.toastsService.error('Server does not respond!','Error!')
-          }
+        catchError((errorResponse) => {
+          this.handleHttpError(errorResponse);
           return EMPTY;
         }),
         finalize(() => {
@@ -109,7 +107,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
     if(this.isLoading || !this.newTransactionForm.valid) return;
 
-    this.loaderService.setLoadingState(true);
+    this.startLoading();
 
     const newTransactionDto: NewTransactionDto = {
       amount: this.newTransactionForm.get('amount')!.value,
@@ -121,15 +119,17 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
     this.transactionService.addTransaction(newTransactionDto).pipe(
       catchError((errorResponse) => {
-        if (errorResponse.status === 0) {
-          this.toastsService.error('Server does not respond!','Error!')
-        }
+        this.handleHttpError(errorResponse);
         return EMPTY;
       }),
       finalize(() => {
-        this.loaderService.setLoadingState(false);
+        this.stopLoading();
       })
-    ).subscribe();
+    ).subscribe(()=>{
+      this.showSuccessToast('Successfully add new transaction.');
+      this.stopLoading();
+      this.loadTransactions();
+    });
     this.newTransactionForm.reset();
     this.hideModal();
   }
@@ -137,19 +137,21 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   onDeleteTransaction(transactionId: string): void {
     if(this.isLoading) return;
 
-    this.loaderService.setLoadingState(true);
+    this.startLoading();
 
     this.transactionService.deleteTransaction(transactionId).pipe(
       catchError((errorResponse) => {
-        if (errorResponse.status === 0) {
-          this.toastsService.error('Server does not respond!','Error!')
-        }
+        this.handleHttpError(errorResponse);
         return EMPTY;
       }),
       finalize(() => {
-        this.loaderService.setLoadingState(false);
+        this.stopLoading();
       })
-    ).subscribe();
+    ).subscribe(()=>{
+      this.showSuccessToast('Successfully delete transaction.');
+      this.stopLoading();
+      this.loadTransactions();
+    });
   }
 
   getTotalAmount(): number {
@@ -170,9 +172,13 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     return this.transactions
       .filter(transaction => {
         const isIncome = transaction.amount >= 0;
-        return (this.showIncome.value && isIncome) || (this.showExpense.value && !isIncome);
+        const isUncategorized = !transaction.categoryType;
+
+        return ((this.showIncome.value && isIncome) || (this.showExpense.value && !isIncome)) &&
+          (!this.selectedCategory.value ||
+            (isUncategorized && this.selectedCategory.value === 'Uncategorized') ||
+            (!isUncategorized && transaction.categoryType === this.selectedCategory.value));
       })
-      .filter(transaction => !this.selectedCategory.value || transaction.categoryType === this.selectedCategory.value)
       .filter(transaction => this.filterByDate(transaction));
   }
 
@@ -196,4 +202,18 @@ export class TransactionsComponent implements OnInit, OnDestroy {
         return true;
     }
   }
+
+  handleHttpError(error: any): void {
+    if (error.status === 0) {
+      this.showErrorToast('Server does not respond!');
+    }
+  }
+
+  showSuccessToast(message: string): void {this.toastsService.success(message, 'Success!');}
+
+  showErrorToast(message: string): void {this.toastsService.error(message, 'Error!');}
+
+  startLoading(): void {this.loaderService.setLoadingState(true);}
+
+  stopLoading(): void {this.loaderService.setLoadingState(false);}
 }
