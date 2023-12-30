@@ -58,23 +58,5 @@ public class AppDbContextInitializer(
                  await userManager.AddToRolesAsync(administrator, new [] { adminRole.Name });
              }
          }
-    
-         //TODO seed some sample transactions
-         // if (!context.TodoLists.Any())
-         // {
-         //     context.TodoLists.Add(new TodoList
-         //     {
-         //         Title = "Todo List",
-         //         Items =
-         //         {
-         //             new TodoItem { Title = "Make a todo list 📃" },
-         //             new TodoItem { Title = "Check off the first item ✅" },
-         //             new TodoItem { Title = "Realise you've already done two things on the list! 🤯"},
-         //             new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
-         //         }
-         //     });
-         //
-         //     await context.SaveChangesAsync();
-         // }
      }
 }

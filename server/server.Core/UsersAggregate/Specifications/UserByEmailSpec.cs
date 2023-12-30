@@ -1,6 +1,4 @@
-using server.Core.UsersAggregate;
-
-namespace server.Infrastructure.UserAggregate.Specifications;
+namespace server.Core.UsersAggregate.Specifications;
 
 public sealed class UserByEmailSpec : Specification<AppUser>
 {

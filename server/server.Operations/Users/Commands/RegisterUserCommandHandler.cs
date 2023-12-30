@@ -1,6 +1,6 @@
 using server.Core.UsersAggregate;
+using server.Core.UsersAggregate.Specifications;
 using server.Infrastructure.Data.Config;
-using server.Infrastructure.UserAggregate.Specifications;
 
 namespace server.Operations.Users.Commands;
 

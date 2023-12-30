@@ -1,6 +1,6 @@
 using server.Core.UsersAggregate;
+using server.Core.UsersAggregate.Specifications;
 using server.Infrastructure.Jwt;
-using server.Infrastructure.UserAggregate.Specifications;
 
 namespace server.Operations.Users.Commands;
 
