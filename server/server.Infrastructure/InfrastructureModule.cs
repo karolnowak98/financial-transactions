@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using server.Core.UsersAggregate;
 using server.Infrastructure.Data;
 using server.Infrastructure.Jwt;
+using StackExchange.Redis;
 
 namespace server.Infrastructure;
 
@@ -33,6 +34,7 @@ public static class InfrastructureModule
         
         services.AddScoped<AppDbContextInitializer>();
         services.AddScoped<IJwtGenerator, JwtGenerator>();
+        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("RedisDB"));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
     }

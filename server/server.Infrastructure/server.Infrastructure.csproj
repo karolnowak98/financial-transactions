@@ -22,6 +22,7 @@
         <PackageReference Include="Ardalis.SharedKernel" Version="1.4.0" />
         <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="8.0.0" />
         <PackageReference Include="FastEndpoints" Version="5.20.1.7-beta" />
+        <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
     </ItemGroup>
 
     <ItemGroup>
