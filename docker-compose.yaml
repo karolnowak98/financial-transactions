@@ -1,0 +1,9 @@
+services:
+  backend:
+    build: server/server.Web/.
+    ports:
+      - "8081:8081"
+  frontend:
+    build: client/.
+    ports:
+      - "9091:80"
